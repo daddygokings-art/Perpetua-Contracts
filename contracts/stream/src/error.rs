@@ -169,3 +169,9 @@ impl Error {
     /// without renumbering or mutating public ABI error discriminants.
     pub const ArithmeticOverflow: Error = Error::Overflow;
 }
+
+impl Error {
+    /// Alias for [`Error::Overflow`] to support explicit arithmetic overflow terminology
+    /// without renumbering or mutating public ABI error discriminants.
+    pub const ArithmeticOverflow: Error = Error::Overflow;
+}
