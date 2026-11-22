@@ -5616,4 +5616,46 @@ mod tests {
         assert_eq!(target_client.cap(), 42);
         assert!(ctx.client.get_proposal(&id).executed);
     }
+
+    #[test]
+    fn test_governance_error_discriminants_and_observability() {
+        let variants = [
+            GovernanceError::NotInitialized,
+            GovernanceError::AlreadyInitialized,
+            GovernanceError::Unauthorized,
+            GovernanceError::NotASigner,
+            GovernanceError::ProposalNotFound,
+            GovernanceError::AlreadyExecuted,
+            GovernanceError::QuorumNotReached,
+            GovernanceError::TimelockNotElapsed,
+            GovernanceError::AlreadyApproved,
+            GovernanceError::CalldataTooLarge,
+            GovernanceError::TooManySigners,
+            GovernanceError::ProposalExpired,
+            GovernanceError::ProposalCancelled,
+            GovernanceError::NotProposerOrAdmin,
+            GovernanceError::InvalidThreshold,
+            GovernanceError::QuorumWouldBreak,
+            GovernanceError::DuplicateSigner,
+            GovernanceError::ArithmeticOverflow,
+            GovernanceError::CalldataEmpty,
+            GovernanceError::InvalidCalldata,
+            GovernanceError::TimelockNotMet,
+            GovernanceError::InvalidSignerGeneration,
+            GovernanceError::ReentrancyGuard,
+            GovernanceError::TooManyEmergencyGuardians,
+            GovernanceError::DuplicateEmergencyGuardian,
+            GovernanceError::InvalidProposalState,
+            GovernanceError::BatchTooLarge,
+        ];
+
+        for (i, a) in variants.iter().enumerate() {
+            let code_a = *a as u32;
+            assert!(code_a > 0, "governance error discriminants must be non-zero");
+            for b in variants.iter().skip(i + 1) {
+                assert_ne!(code_a, *b as u32, "duplicate GovernanceError discriminant");
+            }
+        }
+    }
 }
+
